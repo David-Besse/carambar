@@ -1,4 +1,4 @@
-import { Controller, Get, Header, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Header, Param, Post } from '@nestjs/common';
 import { JokesService } from './jokes.service';
 
 @Controller()
@@ -30,7 +30,7 @@ export class JokesController {
   // Create a new joke
   @Post()
   @Header('Content-Type', 'application/json')
-  createJoke(newjoke: { joke: string; answer: string }) {
+  createJoke(@Body() newjoke: { joke: string; answer: string }) {
     return this.jokeService.createJoke(newjoke);
   }
 }
