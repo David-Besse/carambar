@@ -63,4 +63,22 @@ export class JokesService {
       throw err;
     }
   }
+
+  /**
+   * Creates a new joke in the database.
+   *
+   * @param {Object} newjoke - The joke object containing the joke and answer.
+   * @param {string} newjoke.joke - The joke.
+   * @param {string} newjoke.answer - The answer.
+   * @return {Promise<Joke>} A promise that resolves to the created joke.
+   */
+  async createJoke(newjoke: { joke: string; answer: string }): Promise<Joke> {
+    try {
+      const newJoke = await this.jokeModel.create(newjoke);
+      return newJoke;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  }
 }
