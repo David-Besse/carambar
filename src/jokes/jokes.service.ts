@@ -81,4 +81,21 @@ export class JokesService {
       throw err;
     }
   }
+
+  async deleteJoke(id: string) {
+    try {
+      const deletedJoke = await this.jokeModel.destroy({
+        where: { id: parseInt(id) },
+      });
+
+      if (deletedJoke === 0) {
+        throw new Error('Joke not found');
+      }
+
+      return deletedJoke;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  }
 }
