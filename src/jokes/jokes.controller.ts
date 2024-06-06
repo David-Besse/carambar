@@ -1,4 +1,4 @@
-import { Controller, Get, Header, Param } from '@nestjs/common';
+import { Controller, Get, Header, Param, Post } from '@nestjs/common';
 import { JokesService } from './jokes.service';
 
 @Controller('blagues')
@@ -6,7 +6,7 @@ export class JokesController {
   constructor(private readonly jokeService: JokesService) {}
 
   // Get all jokes
-  @Get()
+  @Get('blagues')
   @Header('Content-Type', 'application/json')
   getAllJokes() {
     return this.jokeService.findAll();
@@ -14,16 +14,23 @@ export class JokesController {
 
   // Get a random joke
   // NOTE: this route should be placed before the GET('id') route, because the code is read from top to bottom, otherwise it will be inaccessible
-  @Get('random')
+  @Get('blagues/random')
   @Header('Content-Type', 'application/json')
   getRandomJoke() {
     return this.jokeService.findRandomJoke();
   }
 
   // Get a joke by its ID
-  @Get('/:id')
+  @Get('blagues/:id')
   @Header('Content-Type', 'application/json')
   getJokeById(@Param('id') id: string) {
     return this.jokeService.findOne(id);
+  }
+
+  // Create a new joke
+  @Post()
+  @Header('Content-Type', 'application/json')
+  createJoke(newjoke: { joke: string; answer: string }) {
+    return this.jokeService.createJoke(newjoke);
   }
 }
