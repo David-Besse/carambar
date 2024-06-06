@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { Joke } from './joke';
+import { InjectModel } from '@nestjs/sequelize';
+import { Joke } from 'src/models/joke.model';
 
 @Injectable()
 export class JokesService {
-  jokesList: Joke[] = [
+  jokesList = [
     {
       id: 1,
       joke: 'Quelle est la femelle du hamster ?',
@@ -53,16 +54,29 @@ export class JokesService {
     },
   ];
 
-  getAllJokes(): Joke[] {
-    return this.jokesList;
+  constructor(
+    @InjectModel(Joke)
+    private readonly jokeModel: typeof Joke,
+  ) {}
+
+  async findAll(): Promise<Joke[]> {
+    const jokes = await this.jokeModel.findAll();
+    return jokes;
   }
 
-  getJokeById(id: number): Joke | undefined {
-    return this.jokesList.find((joke) => joke.id === id);
+  async findOne(id: string): Promise<Joke | null> {
+    const foundJoke = await this.jokeModel.findOne({
+      where: { id: id },
+    });
+
+    return foundJoke;
   }
 
-  getRandomJoke() {
-    const randomIndex = Math.floor(Math.random() * this.jokesList.length);
-    return this.jokesList[randomIndex];
+  async findRandomJoke(): Promise<Joke | null> {
+    const count = await this.jokeModel.count();
+    const randomIndex = Math.floor(Math.random() * count);
+    return this.jokeModel.findOne({
+      offset: randomIndex,
+    });
   }
 }
