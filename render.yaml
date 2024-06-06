@@ -1,0 +1,2 @@
+buildCommand: pnpm run build
+prebuildCommand: pnpm run seed
