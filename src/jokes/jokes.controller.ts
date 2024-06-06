@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Header, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Header,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { JokesService } from './jokes.service';
 
 @Controller()
@@ -32,5 +40,12 @@ export class JokesController {
   @Header('Content-Type', 'application/json')
   createJoke(@Body() newjoke: { joke: string; answer: string }) {
     return this.jokeService.createJoke(newjoke);
+  }
+
+  // Delete a joke
+  @Delete('blagues/:id')
+  @Header('Content-Type', 'application/json')
+  deleteJoke(@Param('id') id: string) {
+    return this.jokeService.deleteJoke(id);
   }
 }
