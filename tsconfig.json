@@ -16,6 +16,10 @@
     "noImplicitAny": true,
     "strictBindCallApply": true,
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true
-  }
+    "noFallthroughCasesInSwitch": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true
+  },
+  "exclude": ["node_modules", "test", "dist", "**/*spec.ts"],
+  "include": ["src/**/*.ts", "seed/seed.ts"]
 }

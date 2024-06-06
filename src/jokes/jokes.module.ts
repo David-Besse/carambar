@@ -8,6 +8,5 @@ import { Joke } from '../models/joke.model';
   imports: [SequelizeModule.forFeature([Joke])],
   controllers: [JokesController],
   providers: [JokesService],
-  exports: [JokesService],
 })
 export class JokesModule {}

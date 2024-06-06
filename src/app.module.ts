@@ -1,18 +1,24 @@
 import { Module } from '@nestjs/common';
 import { JokesModule } from './jokes/jokes.module';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { Joke } from './models/joke.model';
+import path from 'path';
+
+const dbPath = path.resolve(process.cwd(), '../database/carambar.db');
 
 @Module({
   imports: [
     SequelizeModule.forRoot({
-      database: 'carambar',
-      username: 'root',
       dialect: 'sqlite',
-      password: 'root',
-      host: 'localhost',
-      port: 3306,
-      storage: ':memory:',
-      models: ['@nestjs/models'],
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT || '3306', 10),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+      autoLoadModels: true,
+      synchronize: true,
+      storage: dbPath,
+      models: [Joke],
     }),
     JokesModule,
   ],

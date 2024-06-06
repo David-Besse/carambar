@@ -1,21 +1,31 @@
-import {
-  AutoIncrement,
-  Column,
-  Model,
-  PrimaryKey,
-  Table,
-} from 'sequelize-typescript';
+import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
-@Table
+@Table({ tableName: 'jokes' }) // name of table in database
 export class Joke extends Model {
-  @PrimaryKey
-  @AutoIncrement
-  @Column
+  @Column({
+    type: DataType.INTEGER, // type of column
+    allowNull: false, // allow null values
+    unique: true, // make column unique
+    autoIncrement: true, // auto increment
+    primaryKey: true, // make column primary key
+  })
   id: number;
 
-  @Column
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
+  })
   joke: string;
 
-  @Column
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
+  })
   answer: string;
 }
