@@ -2,9 +2,8 @@ import { Module } from '@nestjs/common';
 import { JokesModule } from './jokes/jokes.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Joke } from './models/joke.model';
-import path from 'path';
 
-const dbPath = path.resolve(process.cwd(), '../database/carambar.db');
+const dbPath = 'src/database/carambar.db';
 
 @Module({
   imports: [

@@ -1,8 +1,7 @@
 import { Sequelize } from 'sequelize-typescript';
 import { Joke } from '../src/models/joke.model';
-import path from 'path';
 
-const dbPath = path.resolve(process.cwd(), '../database/carambar.db');
+const dbPath = 'src/database/carambar.db';
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',
