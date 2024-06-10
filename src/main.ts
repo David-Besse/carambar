@@ -15,7 +15,12 @@ async function bootstrap() {
     .setTitle('Carambar')
     .setDescription('Carambar API description')
     .setVersion('1.0')
-    .addTag('carambar')
+    .setBasePath(apiPath)
+    .setContact(
+      'David Besse',
+      'https://github.com/David-Besse/carambar',
+      'davidb.webdev@gmail.com',
+    )
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup(`${apiPath}/docs`, app, document);

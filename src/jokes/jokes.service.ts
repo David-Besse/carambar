@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Joke } from 'src/models/joke.model';
+import { ReadJokeDto } from './jokes.dto';
 
 @Injectable()
 export class JokesService {
@@ -12,13 +13,12 @@ export class JokesService {
   /**
    * Retrieves all jokes from the database.
    *
-   * @return {Promise<Joke[]>} A promise that resolves to an array of Joke objects.
+   * @return {Promise<ReadJokeDto[]>} A promise that resolves to an array of Joke objects.
    * @throws {Error} If there is an error retrieving the jokes.
    */
-  async findAll(): Promise<Joke[]> {
+  async findAll(): Promise<ReadJokeDto[]> {
     try {
       const jokes = await this.jokeModel.findAll();
-      console.log('jokes', jokes);
       return jokes;
     } catch (err) {
       console.log(err);
@@ -30,10 +30,10 @@ export class JokesService {
    * Finds a joke by its ID.
    *
    * @param {string} id - The ID of the joke.
-   * @return {Promise<Joke | null>} A promise that resolves to the found joke or null if not found.
+   * @return {Promise<ReadJokeDto | null>} A promise that resolves to the found joke or null if not found.
    * @throws {Error} If there is an error while finding the joke.
    */
-  async findOne(id: string): Promise<Joke | null> {
+  async findOne(id: string): Promise<ReadJokeDto | null> {
     try {
       const foundJoke = await this.jokeModel.findOne({
         where: { id: parseInt(id) },
@@ -48,10 +48,10 @@ export class JokesService {
   /**
    * Retrieves a random joke from the database.
    *
-   * @return {Promise<Joke | null>} A promise that resolves to a randomly selected joke or null if no jokes are available.
+   * @return {Promise<ReadJokeDto | null>} A promise that resolves to a randomly selected joke or null if no jokes are available.
    * @throws {Error} If there is an error retrieving the random joke.
    */
-  async findRandomJoke(): Promise<Joke | null> {
+  async findRandomJoke(): Promise<ReadJokeDto | null> {
     try {
       const count = await this.jokeModel.count();
       const randomIndex = Math.floor(Math.random() * count);
@@ -67,22 +67,32 @@ export class JokesService {
   /**
    * Creates a new joke in the database.
    *
-   * @param {Object} newjoke - The joke object containing the joke and answer.
-   * @param {string} newjoke.joke - The joke.
-   * @param {string} newjoke.answer - The answer.
-   * @return {Promise<Joke>} A promise that resolves to the created joke.
+   * @param {object} joke - The joke object containing the joke and answer.
+   * @param {string} joke.joke - The joke text.
+   * @param {string} joke.answer - The answer to the joke.
+   * @return {Promise<ReadJokeDto>} A promise that resolves to the created joke.
    */
-  async createJoke(newjoke: { joke: string; answer: string }): Promise<Joke> {
+  async createJoke(joke: {
+    joke: string;
+    answer: string;
+  }): Promise<ReadJokeDto> {
     try {
-      const newJoke = await this.jokeModel.create(newjoke);
-      return newJoke;
+      const createdJoke: ReadJokeDto = await this.jokeModel.create(joke);
+      return createdJoke;
     } catch (err) {
       console.log(err);
       throw err;
     }
   }
 
-  async deleteJoke(id: string) {
+  /**
+   * Deletes a joke from the database.
+   *
+   * @param {string} id - The ID of the joke to be deleted.
+   * @return {Promise<number>} A promise that resolves to the number of jokes deleted.
+   * @throws {Error} If the joke with the given ID is not found.
+   */
+  async deleteJoke(id: string): Promise<number> {
     try {
       const deletedJoke = await this.jokeModel.destroy({
         where: { id: parseInt(id) },
